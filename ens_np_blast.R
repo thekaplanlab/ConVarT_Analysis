@@ -1,4 +1,6 @@
 
+# !NOT RUN! #
+
 library(seqinr)
 library(dplyr)
 library(data.table)
@@ -9,7 +11,7 @@ library(stringr)
     as.data.frame()
   seq$ens<-rownames(seq)
   
-  
+
   ncbiseq<-read.fasta(file = "GCF_000001405.39_GRCh38.p13_protein.faa", seqtype = "AA", as.string = TRUE, set.attributes = TRUE) %>%
     unlist() %>%
     as.data.frame()
