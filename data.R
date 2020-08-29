@@ -4,9 +4,11 @@
 
 library(data.table)
 library(stringr)
+library(pbapply)
 library(dplyr)
 library(seqinr)
 library(biomaRt)
+library(tidyr)
 
 source("ens_np_blast.R")
 
@@ -14,9 +16,25 @@ source("ens_np_blast.R")
 # msa
 
 table<-fread("msa_table.txt")
-table33<-table[grep("musculus", table$fasta, ignore.case = TRUE),]
-table33<-table[grep("sapiens", table33$fasta, ignore.case = TRUE),]
-table33<-table[grep("elegans", table33$fasta, ignore.case = TRUE),]
+table11<-table %>%
+  filter(grepl('musculus', fasta)) %>%
+  filter(grepl('sapiens', fasta)) %>%
+  filter(grepl('elegans', fasta)) %>%
+  filter(!grepl('macaca', fasta, ignore.case = TRUE)) %>%
+  filter(!grepl('xenopus', fasta, ignore.case = TRUE)) %>%
+  filter(!grepl('drosophila', fasta, ignore.case = TRUE)) %>%
+  filter(!grepl('rattus', fasta, ignore.case = TRUE)) %>%
+  filter(!grepl('rerio', fasta, ignore.case = TRUE)) %>%
+  filter(!grepl('troglodytes', fasta, ignore.case = TRUE))
+
+table33<-table %>%
+  filter(grepl('musculus', fasta)) %>%
+  filter(grepl('sapiens', fasta)) %>%
+  filter(grepl('elegans', fasta))
+
+table333<-table[grep(c("musculus","sapiens","elegans"), table$fasta, ignore.case = TRUE),]
+table33<-table33[grep("sapiens", table33$fasta, ignore.case = TRUE),]
+table33<-table33[grep("elegans", table33$fasta, ignore.case = TRUE),]
 
 table2<-strsplit(as.character(table33$fasta), "\n>")
 
@@ -24,6 +42,9 @@ table2<-pblapply(X = table2, FUN = function(t) gsub(pattern = "\n", replacement 
 
 table233<-pblapply(table2, function(x) length(x) == 3)
 table23<-table2[unlist(table233)]
+taa<-matrix(unlist(table23), nrow = 411642, ncol = 3)
+taa<-data.frame(taa, stringsAsFactors = FALSE)
+
 table23<-table23[1:length(table23)]
 
 
@@ -128,7 +149,7 @@ gnomad1$refseq<-glist$refseq_peptide[match(gnomad1$Refseq_ID, glist$ensembl_tran
 gnomad1$refseq[which(gnomad1$refseq == "")]<-NA
 gnomad<-gnomad1[!is.na(gnomad1$refseq),]
 colnames(gnomad)[c(1,7)]<-c("ens","Refseq_ID")
-
+write.table()
 
 # mutagen
 
