@@ -1,5 +1,5 @@
 
-
+# !NOT RUN! #
 
 # aapos = aa position of variations of one protein as given in the table
 # sqsqsq = index of aa positions in msa
