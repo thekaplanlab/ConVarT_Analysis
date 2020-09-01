@@ -16,16 +16,16 @@ ptm <- proc.time()
 # msa
 
 table<-fread("msa_table.txt")
-table11<-table %>%
-  filter(grepl('musculus', fasta)) %>%
-  filter(grepl('sapiens', fasta)) %>%
-  filter(grepl('elegans', fasta)) %>%
-  filter(!grepl('macaca', fasta, ignore.case = TRUE)) %>%
-  filter(!grepl('xenopus', fasta, ignore.case = TRUE)) %>%
-  filter(!grepl('drosophila', fasta, ignore.case = TRUE)) %>%
-  filter(!grepl('rattus', fasta, ignore.case = TRUE)) %>%
-  filter(!grepl('rerio', fasta, ignore.case = TRUE)) %>%
-  filter(!grepl('troglodytes', fasta, ignore.case = TRUE))
+# table11<-table %>%
+#   filter(grepl('musculus', fasta)) %>%
+#   filter(grepl('sapiens', fasta)) %>%
+#   filter(grepl('elegans', fasta)) %>%
+#   filter(!grepl('macaca', fasta, ignore.case = TRUE)) %>%
+#   filter(!grepl('xenopus', fasta, ignore.case = TRUE)) %>%
+#   filter(!grepl('drosophila', fasta, ignore.case = TRUE)) %>%
+#   filter(!grepl('rattus', fasta, ignore.case = TRUE)) %>%
+#   filter(!grepl('rerio', fasta, ignore.case = TRUE)) %>%
+#   filter(!grepl('troglodytes', fasta, ignore.case = TRUE))
 
 table33<-table %>%
   filter(grepl('musculus', fasta)) %>%
@@ -42,10 +42,6 @@ table2<-pblapply(X = table2, FUN = function(t) gsub(pattern = "\n", replacement 
 
 table233<-pblapply(table2, function(x) length(x) == 3)
 table23<-table2[unlist(table233)]
-taa<-matrix(unlist(table23), nrow = 411642, ncol = 3)
-taa<-data.frame(taa, stringsAsFactors = FALSE)
-
-table23<-table23[1:length(table23)]
 
 
 # mouse
@@ -86,6 +82,8 @@ clinvar$to<-a(clinvar$to)
 colnames(clinvar)[17]<-"aapos"
 colnames(clinvar)[18]<-"Refseq_ID"
 
+clinvar<-unique(setDT(clinvar), by= c("aapos","Refseq_ID"))
+
 
 # dbsnp
 
@@ -107,6 +105,7 @@ dbsnp$refseq<-all1$refseq[match(dbsnp$Refseq_ID, all1$ens)]
 dbsnp<-dbsnp[!is.na(dbsnp$refseq),]
 colnames(dbsnp)[c(3,6)]<-c("ens","Refseq_ID")
 
+dbsnp<-unique(setDT(dbsnp), by= c("aapos","Refseq_ID"))
 
 # cosmic
 
@@ -128,6 +127,7 @@ cosmic$refseq[which(cosmic$refseq == "")]<-NA
 cosmic<-cosmic[!is.na(cosmic$refseq),]
 colnames(cosmic)[c(1,6)]<-c("ens","Refseq_ID")
 
+cosmic<-unique(setDT(cosmic), by= c("aapos","Refseq_ID"))
 
 # gnomad
 
@@ -151,7 +151,8 @@ gnomad1$refseq<-glist$refseq_peptide[match(gnomad1$Refseq_ID, glist$ensembl_tran
 gnomad1$refseq[which(gnomad1$refseq == "")]<-NA
 gnomad<-gnomad1[!is.na(gnomad1$refseq),]
 colnames(gnomad)[c(1,7)]<-c("ens","Refseq_ID")
-write.table()
+
+gnomad<-unique(setDT(gnomad), by= c("aapos","Refseq_ID"))
 
 # mutagen
 
@@ -181,6 +182,8 @@ mutagen<-rbind(mutagen, mutagenphe)
 
 tempmutagen<-str_split_fixed(mutagen$Refseq_ID , "\\.", 2)
 mutagen$Refseq_ID<-tempmutagen[,1]
+
+mutagen<-unique(setDT(mutagen), by= c("aa_position","Refseq_ID"))
 
 proc.time() - ptm
 
