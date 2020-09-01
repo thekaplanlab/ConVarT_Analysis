@@ -38,16 +38,35 @@ analysis2<-function(analysis, sp1, sp2) {
   celegans_sqsqsq<-analysis[[27]]
   celegans_ind<-analysis[[28]]
   
+  mouse_aap<-mouse_aap[!is.na(mouse_sqsqsq)]
+  mouse_rfsq<-mouse_rfsq[!is.na(mouse_sqsqsq)]
+  mouse_sqsqsq<-mouse_sqsqsq[!is.na(mouse_sqsqsq)]
+  mouse_ind<-mouse_ind[!is.na(mouse_sqsqsq)]
+  
+  celegans_aap<-celegans_aap[!is.na(celegans_sqsqsq)]
+  celegans_rfsq<-celegans_rfsq[!is.na(celegans_sqsqsq)]
+  celegans_sqsqsq<-celegans_sqsqsq[!is.na(celegans_sqsqsq)]
+  celegans_ind<-celegans_ind[!is.na(celegans_sqsqsq)]
   
   u_sp1_ind<-unique(get(paste0(sp1, "_ind")))
   u_sp2_ind<-unique(get(paste0(sp2, "_ind")))
   commonind<-u_sp2_ind[which(u_sp2_ind %fin% u_sp1_ind)]
   
-  sp1_common_aa<-c()
-  sp1_common_refseq<-c()
-  sp2_common_aa<-c()
-  sp2_common_refseq<-c()
-  pb = txtProgressBar(min = 0, max = max(commonind), initial = 0)
+  u1<-get(paste0(sp1, "_aap"))
+  u2<-get(paste0(sp1, "_rfsq"))
+  u3<-get(paste0(sp2, "_aap"))
+  u4<-get(paste0(sp2, "_rfsq"))
+  
+  sp1_common_aa<-numeric(length(u1))
+  sp1_common_refseq<-character(length(u2))
+  sp2_common_aa<-numeric(length(u3))
+  sp2_common_refseq<-character(length(u4))
+  
+  sp1_common_aa_length<-0
+  sp1_common_refseq_length<-0
+  sp2_common_aa_length<-0
+  sp2_common_refseq_length<-0
+  
   for (i in commonind){
     
     # Mouse - Celegans
@@ -60,16 +79,25 @@ analysis2<-function(analysis, sp1, sp2) {
       xsp2_common_aa<-get(paste0(sp2, "_aap"))[which((get(paste0(sp2, "_ind")) %fin% i) & (get(paste0(sp2, "_sqsqsq")) %fin% anumber))]
       xsp2_common_refseq<-get(paste0(sp2, "_rfsq"))[which((get(paste0(sp2, "_ind")) %fin% i) & (get(paste0(sp2, "_sqsqsq")) %fin% anumber))]
       
-      sp1_common_aa<-c(sp1_common_aa, xsp1_common_aa)
-      sp1_common_refseq<-c(sp1_common_refseq, xsp1_common_refseq)
-      sp2_common_aa<-c(sp2_common_aa, xsp2_common_aa)
-      sp2_common_refseq<-c(sp2_common_refseq, xsp2_common_refseq)
+      sp1_common_aa[(sp1_common_aa_length+1) : (sp1_common_aa_length+length(xsp1_common_aa))]<-xsp1_common_aa
+      sp1_common_refseq[(sp1_common_refseq_length+1) : (sp1_common_refseq_length+length(xsp1_common_refseq))]<-xsp1_common_refseq
+      sp2_common_aa[(sp2_common_aa_length+1) : (sp2_common_aa_length+length(xsp2_common_aa))]<-xsp2_common_aa
+      sp2_common_refseq[(sp2_common_refseq_length+1) : (sp2_common_refseq_length+length(xsp2_common_refseq))]<-xsp2_common_refseq
+      
+      sp1_common_aa_length<-sp1_common_aa_length + length(xsp1_common_aa)
+      sp1_common_refseq_length<-sp1_common_refseq_length + length(xsp1_common_refseq)
+      sp2_common_aa_length<-sp2_common_aa_length + length(xsp2_common_aa)
+      sp2_common_refseq_length<-sp2_common_refseq_length + length(xsp2_common_refseq)
     }
     
     progress(i, max(commonind), init = TRUE)
-    if (i == (max(commonind)+1)) message("Done!")
+    if (i == max(commonind)) message("Done!")
     #setTxtProgressBar(pb,i)
   }
+  sp1_common_aa<-sp1_common_aa[sp1_common_aa != 0]
+  sp1_common_refseq<-sp1_common_refseq[sp1_common_refseq != ""]
+  sp2_common_aa<-sp2_common_aa[sp2_common_aa != 0]
+  sp2_common_refseq<-sp2_common_refseq[sp2_common_refseq != ""]
   
   lst<-list(sp1_common_aa, sp1_common_refseq, sp2_common_aa, sp2_common_refseq)
   return(lst)

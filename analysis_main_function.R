@@ -96,7 +96,7 @@ analysis_main<-function(...){
   celegans_sqsqsq_length<-0
   celegans_ind_length<-0
   
-  for (i in 1:10000){
+  for (i in 1:length(table23)){
     mouse_an<-0
     mouse_anumber<-c()
     mouse_indx<-c()
@@ -411,4 +411,3 @@ analysis_main<-function(...){
              celegans_ind_length)
   return(lstt)
 }
-

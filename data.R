@@ -12,7 +12,7 @@ library(tidyr)
 
 source("ens_np_blast.R")
 
-
+ptm <- proc.time()
 # msa
 
 table<-fread("msa_table.txt")
@@ -179,4 +179,6 @@ mutagen<-rbind(mutagen, mutagenphe)
 
 tempmutagen<-str_split_fixed(mutagen$Refseq_ID , "\\.", 2)
 mutagen$Refseq_ID<-tempmutagen[,1]
+
+proc.time() - ptm
 
