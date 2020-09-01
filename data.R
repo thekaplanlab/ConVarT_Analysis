@@ -55,6 +55,7 @@ mouse1<-str_split_fixed(mouse$`Amino Acid Change`, "->", 2)
 mouse$from<-mouse1[,1]
 mouse$to<-mouse1[,2]
 colnames(mouse)[26:27]<-c("from", "to")
+mouse<-unique(setDT(mouse), by= c("aa_position","Refseq_ID"))
 
 
 # celegans
@@ -63,6 +64,7 @@ celegans<-fread("c_elegans_variations.csv")
 celegans1<-str_split_fixed(celegans$V7, " to ", 2)
 colnames(celegans1)<-c("from", "to")
 celegans<-cbind(celegans, celegans1)
+celegans<-unique(setDT(celegans), by= c("V6","V9"))
 
 
 # clinvar
