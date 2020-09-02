@@ -40,13 +40,39 @@ analysis2<-function(analysis, sp1, sp2) {
   
   mouse_aap<-mouse_aap[!is.na(mouse_sqsqsq)]
   mouse_rfsq<-mouse_rfsq[!is.na(mouse_sqsqsq)]
-  mouse_sqsqsq<-mouse_sqsqsq[!is.na(mouse_sqsqsq)]
   mouse_ind<-mouse_ind[!is.na(mouse_sqsqsq)]
+  mouse_sqsqsq<-mouse_sqsqsq[!is.na(mouse_sqsqsq)]
+  
+  mutagen_aap<-mutagen_aap[!is.na(mutagen_sqsqsq)]
+  mutagen_rfsq<-mutagen_rfsq[!is.na(mutagen_sqsqsq)]
+  mutagen_ind<-mutagen_ind[!is.na(mutagen_sqsqsq)]
+  mutagen_sqsqsq<-mutagen_sqsqsq[!is.na(mutagen_sqsqsq)]
+  
+  clinvar_aap<-clinvar_aap[!is.na(clinvar_sqsqsq)]
+  clinvar_rfsq<-clinvar_rfsq[!is.na(clinvar_sqsqsq)]
+  clinvar_ind<-clinvar_ind[!is.na(clinvar_sqsqsq)]
+  clinvar_sqsqsq<-clinvar_sqsqsq[!is.na(clinvar_sqsqsq)]
+  
+  dbsnp_aap<-dbsnp_aap[!is.na(dbsnp_sqsqsq)]
+  dbsnp_rfsq<-dbsnp_rfsq[!is.na(dbsnp_sqsqsq)]
+  dbsnp_ind<-dbsnp_ind[!is.na(dbsnp_sqsqsq)]
+  dbsnp_sqsqsq<-dbsnp_sqsqsq[!is.na(dbsnp_sqsqsq)]
+  
+  cosmic_aap<-cosmic_aap[!is.na(cosmic_sqsqsq)]
+  cosmic_rfsq<-cosmic_rfsq[!is.na(cosmic_sqsqsq)]
+  cosmic_ind<-cosmic_ind[!is.na(cosmic_sqsqsq)]
+  cosmic_sqsqsq<-cosmic_sqsqsq[!is.na(cosmic_sqsqsq)]
+  
+  gnomad_aap<-gnomad_aap[!is.na(gnomad_sqsqsq)]
+  gnomad_rfsq<-gnomad_rfsq[!is.na(gnomad_sqsqsq)]
+  gnomad_ind<-gnomad_ind[!is.na(gnomad_sqsqsq)]
+  gnomad_sqsqsq<-gnomad_sqsqsq[!is.na(gnomad_sqsqsq)]
   
   celegans_aap<-celegans_aap[!is.na(celegans_sqsqsq)]
   celegans_rfsq<-celegans_rfsq[!is.na(celegans_sqsqsq)]
-  celegans_sqsqsq<-celegans_sqsqsq[!is.na(celegans_sqsqsq)]
   celegans_ind<-celegans_ind[!is.na(celegans_sqsqsq)]
+  celegans_sqsqsq<-celegans_sqsqsq[!is.na(celegans_sqsqsq)]
+  
   
   u_sp1_ind<-unique(get(paste0(sp1, "_ind")))
   u_sp2_ind<-unique(get(paste0(sp2, "_ind")))
@@ -92,7 +118,6 @@ analysis2<-function(analysis, sp1, sp2) {
     
     progress(i, max(commonind), init = TRUE)
     if (i == max(commonind)) message("Done!")
-    #setTxtProgressBar(pb,i)
   }
   sp1_common_aa<-sp1_common_aa[sp1_common_aa != 0]
   sp1_common_refseq<-sp1_common_refseq[sp1_common_refseq != ""]
