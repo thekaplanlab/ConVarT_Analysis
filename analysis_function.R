@@ -1,7 +1,7 @@
 
 # !NOT RUN! #
 
-analysis2<-function(analysis, sp1, sp2) {
+analysis21<-function(analysis, sp1, sp2) {
   
   mouse_aap<-analysis[[1]]
   mouse_rfsq<-analysis[[2]]
@@ -99,12 +99,50 @@ analysis2<-function(analysis, sp1, sp2) {
     anumber<- Reduce(intersect, list(get(paste0(sp1, "_sqsqsq"))[which(get(paste0(sp1, "_ind")) %fin% i)], get(paste0(sp2, "_sqsqsq"))[which(get(paste0(sp2, "_ind")) %fin% i)]))
     
     if (length(anumber > 0)){
-      xsp1_common_aa<-get(paste0(sp1, "_aap"))[which((get(paste0(sp1, "_ind")) %fin% i) & (get(paste0(sp1, "_sqsqsq")) %fin% anumber))]
-      xsp1_common_refseq<-get(paste0(sp1, "_rfsq"))[which((get(paste0(sp1, "_ind")) %fin% i) & (get(paste0(sp1, "_sqsqsq")) %fin% anumber))]
       
-      xsp2_common_aa<-get(paste0(sp2, "_aap"))[which((get(paste0(sp2, "_ind")) %fin% i) & (get(paste0(sp2, "_sqsqsq")) %fin% anumber))]
-      xsp2_common_refseq<-get(paste0(sp2, "_rfsq"))[which((get(paste0(sp2, "_ind")) %fin% i) & (get(paste0(sp2, "_sqsqsq")) %fin% anumber))]
+      a1<-get(paste0(sp1, "_sqsqsq"))[get(paste0(sp1, "_ind")) == i]
+      b1<-get(paste0(sp1, "_aap"))[get(paste0(sp1, "_ind")) == i]
+      c1<-get(paste0(sp1, "_rfsq"))[get(paste0(sp1, "_ind")) == i]
       
+      a2<-get(paste0(sp2, "_sqsqsq"))[get(paste0(sp2, "_ind")) == i]
+      b2<-get(paste0(sp2, "_aap"))[get(paste0(sp2, "_ind")) == i]
+      c2<-get(paste0(sp2, "_rfsq"))[get(paste0(sp2, "_ind")) == i]
+      
+      xsp1_common_aa<-b1[fmatch(anumber, a1)]
+      xsp1_common_refseq<-c1[fmatch(anumber, a1)]
+      
+      xsp2_common_aa<-b2[fmatch(anumber, a2)]
+      xsp2_common_refseq<-c2[fmatch(anumber, a2)]
+      
+      xsp1_common_aa<-xsp1_common_aa[!is.na(xsp1_common_aa)]
+      xsp1_common_refseq<-xsp1_common_refseq[!is.na(xsp1_common_refseq)]
+      
+      xsp2_common_aa<-xsp2_common_aa[!is.na(xsp2_common_aa)]
+      xsp2_common_refseq<-xsp2_common_refseq[!is.na(xsp2_common_refseq)]
+      
+      # xxa1<-na.omit(get(paste0(sp1, "_aap"))[fmatch(i, get(paste0(sp1, "_ind")))])
+      # xxa2<-na.omit(get(paste0(sp1, "_rfsq"))[fmatch(i, get(paste0(sp1, "_ind")))])
+      # yya1<-get(paste0(sp1, "_aap"))[fmatch(anumber, get(paste0(sp1, "_sqsqsq")))]
+      # yya2<-get(paste0(sp1, "_rfsq"))[fmatch(anumber, get(paste0(sp1, "_sqsqsq")))]
+      # 
+      # xxb1<-na.omit(get(paste0(sp2, "_aap"))[fmatch(i, get(paste0(sp2, "_ind")))])
+      # xxb2<-na.omit(get(paste0(sp2, "_rfsq"))[fmatch(i, get(paste0(sp2, "_ind")))])
+      # yyb1<-get(paste0(sp2, "_aap"))[fmatch(anumber, get(paste0(sp2, "_sqsqsq")))]
+      # yyb2<-get(paste0(sp2, "_rfsq"))[fmatch(anumber, get(paste0(sp2, "_sqsqsq")))]
+      # 
+      # xsp1_common_aa<-yya1[yya1 %fin% xxa1]
+      # xsp1_common_refseq<-yya2[yya2 %fin% xxa2]
+      # 
+      # xsp2_common_aa<-yyb1[yyb1 %fin% xxb1]
+      # xsp2_common_refseq<-yyb2[yyb2 %fin% xxb2]
+      # print(i)
+      # 
+      # xsp1_common_aa<-get(paste0(sp1, "_aap"))[which((get(paste0(sp1, "_ind")) %fin% i) & (get(paste0(sp1, "_sqsqsq")) %fin% anumber))]
+      # xsp1_common_refseq<-get(paste0(sp1, "_rfsq"))[which((get(paste0(sp1, "_ind")) %fin% i) & (get(paste0(sp1, "_sqsqsq")) %fin% anumber))]
+      # 
+      # xsp2_common_aa<-get(paste0(sp2, "_aap"))[which((get(paste0(sp2, "_ind")) %fin% i) & (get(paste0(sp2, "_sqsqsq")) %fin% anumber))]
+      # xsp2_common_refseq<-get(paste0(sp2, "_rfsq"))[which((get(paste0(sp2, "_ind")) %fin% i) & (get(paste0(sp2, "_sqsqsq")) %fin% anumber))]
+      # 
       sp1_common_aa[(sp1_common_aa_length+1) : (sp1_common_aa_length+length(xsp1_common_aa))]<-xsp1_common_aa
       sp1_common_refseq[(sp1_common_refseq_length+1) : (sp1_common_refseq_length+length(xsp1_common_refseq))]<-xsp1_common_refseq
       sp2_common_aa[(sp2_common_aa_length+1) : (sp2_common_aa_length+length(xsp2_common_aa))]<-xsp2_common_aa
