@@ -8,7 +8,7 @@
 # ind = index of protein in msa
 
 analysis_main<-function(...){
-  
+# Reserve space for faster calculation
   mouse_aap<-numeric(300000)
   mouse_rfsq<-character(300000)
   mouse_sqsqsq<-numeric(300000)
@@ -85,7 +85,7 @@ analysis_main<-function(...){
     mouse_an<-cumsum(c(mouse_a12 != 0))
     mouse_anumber<-mouse_an*mouse_a12
     
-    mouse_aapos<-c(mouse$aa_position[which(mouse$Refseq_ID == mouse_ag)])
+    mouse_aapos<-c(mouse$aapos[which(mouse$Refseq_ID == mouse_ag)])
     mouse_sssqq<-fmatch(mouse_aapos, mouse_anumber)
 
     if(length(mouse_aapos)>0){
@@ -107,7 +107,7 @@ analysis_main<-function(...){
     }
     
     
-    mutagen_aapos<-c(mutagen$aa_position[which(mutagen$Refseq_ID == mouse_ag)])
+    mutagen_aapos<-c(mutagen$aapos[which(mutagen$Refseq_ID == mouse_ag)])
     mutagen_sssqq<-fmatch(mutagen_aapos, mouse_anumber)
     
     if(length(mutagen_aapos>0)){
